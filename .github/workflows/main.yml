@@ -1,4 +1,4 @@
-name: Run ChessBot
+name: Run ChessMain
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-ChessBot:
+  run-chessmain:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run ChessBot
-      run: python ChessMain.py
+    - name: Install xvfb
+      run: sudo apt-get install -y xvfb
+
+    - name: Run ChessMain with xvfb
+      run: |
+        Xvfb :99 &  # Start virtual frame buffer
+        export DISPLAY=:99  # Set display environment variable
+        python ChessMain.py
